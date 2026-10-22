@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "royale-lens",
+  "main": "vinext/server/fetch-handler",
+  "compatibility_date": "2026-10-21",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": true,
+  "vars": {
+    "CLASH_ROYALE_API_BASE": "https://proxy.royaleapi.dev"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "royale-lens-db",
+      "database_id": "3dceb477-b765-4fc8-9fda-68a1cd0a4df5",
+      "migrations_dir": "drizzle"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE `account_bookmarked_players` ADD `position` integer DEFAULT 0 NOT NULL;

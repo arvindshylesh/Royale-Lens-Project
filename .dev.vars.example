@@ -1,0 +1,4 @@
+# Copy this file to `.dev.vars` for local development.
+# Never commit the populated `.dev.vars` file.
+CLASH_ROYALE_API_TOKEN=
+GOOGLE_CLIENT_ID=

@@ -1,0 +1,1 @@
+DROP TABLE `account_upgrade_queue_settings`;
