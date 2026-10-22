@@ -492,6 +492,7 @@ function GoogleSignInButton({
   onPainted: () => void;
 }) {
   const buttonRef = useRef<HTMLDivElement>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useLayoutEffect(() => {
     const googleIdentity = window.google?.accounts.id;
@@ -506,19 +507,26 @@ function GoogleSignInButton({
 
     const element = buttonRef.current;
     if (!element) return;
+    setIsReady(false);
     element.replaceChildren();
 
+    let active = true;
     let revealed = false;
     let settleTimer = 0;
     let firstPaintFrame = 0;
     let secondPaintFrame = 0;
+    let handoffFrame = 0;
     const reveal = () => {
       if (revealed) return;
       revealed = true;
       settleTimer = window.setTimeout(() => {
         firstPaintFrame = window.requestAnimationFrame(() => {
           secondPaintFrame = window.requestAnimationFrame(() => {
-            onPainted();
+            if (!active) return;
+            setIsReady(true);
+            // Give React one paint to replace the loading face with Google's
+            // real iframe before the landing-page preflight is dismissed.
+            handoffFrame = window.requestAnimationFrame(onPainted);
           });
         });
       }, 90);
@@ -540,19 +548,21 @@ function GoogleSignInButton({
       size: "large",
       shape: "pill",
       text: "continue_with",
-      width: Math.min(340, Math.max(240, element.clientWidth || 300)),
+      width: Math.min(340, Math.max(1, Math.round(element.clientWidth || 300))),
     });
 
     return () => {
+      active = false;
       observer.disconnect();
       window.clearTimeout(settleTimer);
       window.cancelAnimationFrame(firstPaintFrame);
       window.cancelAnimationFrame(secondPaintFrame);
+      window.cancelAnimationFrame(handoffFrame);
     };
   }, [clientId, onCredential, onPainted]);
 
   return (
-    <div className="google-button-frame">
+    <div className={`google-button-frame ${isReady ? "is-ready" : "is-loading"}`}>
       <div className="google-button-slot" ref={buttonRef} aria-label="Continue with Google" />
       <div className="google-button-face" aria-hidden="true">
         <span className="google-button-mark">
