@@ -6,8 +6,10 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "preview_urls": true,
+  "keep_vars": true,
   "vars": {
-    "CLASH_ROYALE_API_BASE": "https://proxy.royaleapi.dev"
+    "CLASH_ROYALE_API_BASE": "https://proxy.royaleapi.dev",
+    "GOOGLE_CLIENT_ID": "1014566920382-d9277rg9e3aoi2ll6lpc2di5gis6idcr.apps.googleusercontent.com"
   },
   "d1_databases": [
     {
